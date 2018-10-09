@@ -22,5 +22,6 @@
 - hosts: roger
   become: yes
   roles:
+    - php
     - members.lghs.be
-    # - lghs.be
+#     - lghs.be
