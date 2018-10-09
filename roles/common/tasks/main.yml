@@ -1,0 +1,62 @@
+---
+- name: ensure essential packages are installed
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update-cache: yes
+  with_items:
+    - curl
+    - tmux
+  tags:
+    - install
+
+- name: create priviledged group
+  group:
+    name: priviledged-users
+    state: present
+
+- name: ensure priviledged users can sudo
+  copy:
+    content: "%priviledged-users ALL=(ALL) NOPASSWD:ALL"
+    dest: /etc/sudoers.d/10-priviledged-users
+    owner: root
+    group: root
+    mode: 0440
+
+- name: create user
+  user:
+    name: "{{ item.path }}"
+    state: present
+    create_home: yes
+    group: priviledged-users
+    shell: /bin/bash
+  with_filetree: users/
+
+- name: user homes are private
+  file:
+    path: "/home/{{ item.path }}"
+    owner: "{{ item.path }}"
+    group: priviledged-users
+    state: directory
+    mode: 0700
+  with_filetree: users/
+
+- name: users have ~/.ssh
+  file:
+    path: "/home/{{ item.path }}/.ssh"
+    owner: "{{ item.path }}"
+    group: priviledged-users
+    state: directory
+    mode: 0700
+  with_filetree: users/
+
+- name: copy developer keys
+  lineinfile:
+    src: "users/{{ item.path }}"
+    dest: "/home/{{ item.path }}/.ssh/authorized_keys"
+    create: yes
+    mode: 0600
+    owner: "{{ item.path }}"
+    group: "priviledged-users"
+    line: "{{ lookup('file', 'users/' + item.path) }}"
+  with_filetree: users/

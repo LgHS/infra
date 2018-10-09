@@ -1,0 +1,68 @@
+---
+- name: add mongodb apt key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
+
+- name: add mongodb apt source
+  apt_repository:
+    repo: deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/3.6 main
+
+- name: install mongodb-org
+  apt:
+    name: mongodb-org
+  register: mongodb_install
+
+- name: start mongodb
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes
+
+- name: copy script to create users
+  template:
+    src: create_users.js.j2
+    dest: /tmp/create_users.js
+  when: mongodb_install.changed
+
+- name: run script to create users
+  shell: mongo localhost/monbana /tmp/create_users.js
+  when: mongodb_install.changed
+
+- name: remove script to create users
+  file:
+    path: /tmp/create_users.js
+    state: absent
+  when: mongodb_install.changed
+
+
+- name: copy mongodb configuration
+  template:
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+    owner: mongodb
+    group: root
+    mode: 0400
+  notify: restart mongodb
+
+- name: create backup directory
+  file:
+    path: /var/backup/mongodb
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: copy backup script
+  template:
+    src: monbana-backup.sh.j2
+    dest: /var/backup/mongodb/monbana-backup
+    owner: root
+    group: root
+    mode: 0750
+
+- name: create the monbana backup cron job
+  cron:
+    name: 'backup monbana'
+    minute: "0,30"
+    job: "/var/backup/mongodb/monbana-backup &>> /var/log/monbana-backup.log"
