@@ -1,8 +1,10 @@
 ---
-- import_role:
+- name: install php
+  import_role:
     name: php
 
-- import_role:
+- name: install member.lghs.be vhost
+  import_role:
     name: reverse-proxy-unix
   vars:
     vhost: members.lghs.be

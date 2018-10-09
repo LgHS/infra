@@ -1,0 +1,6 @@
+---
+- name: upload vhost config
+  template:
+    src: vhost.conf.j2
+    dest: /etc/nginx/conf.d/{{ vhost }}.conf
+  notify: reload nginx

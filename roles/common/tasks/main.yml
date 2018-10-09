@@ -1,12 +1,11 @@
 ---
 - name: ensure essential packages are installed
   apt:
-    pkg: "{{ item }}"
+    pkg:
+      - curl
+      - tmux
     state: present
     update-cache: yes
-  with_items:
-    - curl
-    - tmux
   tags:
     - install
 
