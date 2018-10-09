@@ -3,6 +3,10 @@
   import_role:
     name: php
 
+- name: install composer
+  import_role:
+    name: composer
+
 - name: install member.lghs.be vhost
   import_role:
     name: reverse-proxy-unix

@@ -4,6 +4,7 @@
     pkg:
       - curl
       - tmux
+      - git
     state: present
     update-cache: yes
   tags:
