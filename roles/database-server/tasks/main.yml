@@ -1,0 +1,18 @@
+---
+- name: add postgresql apt key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+- name: add postgresql apt source
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main
+
+- name: install postgresql
+  apt:
+    name: postgresql-10
+
+- name: start postgresql
+  systemd:
+    name: postgresql@10-main
+    state: started
+    enabled: yes

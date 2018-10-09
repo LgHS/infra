@@ -2,6 +2,16 @@
 
 ## Setup
 
+You need to update your local ssh config since the public DNS are actually cloudflare proxy without the port 22 open. Ask an admin if you need them.
+
+```sh
+Host <inventory-name>
+    User <user>
+    HostName <server-ip>
+    IdentityFile <server-key>
+```
+
+We use a virtualenv to prevent you from having the wrong dependency versions, you can initialise it with these commands:
 ```bash
 virtualenv -p python3 .venv
 source .venv/bin/activate

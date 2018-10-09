@@ -19,8 +19,8 @@
   roles:
     - rocketchat
 
-# - hosts: roger
-#   become: yes
-#   roles:
-#     - members.lghs.be
-#     - lghs.be
+- hosts: roger
+  become: yes
+  roles:
+    - members.lghs.be
+    # - lghs.be
