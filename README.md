@@ -1,3 +1,11 @@
 # LgHS Infra
 
-List of files and snippets for LgS infra
+## Setup
+
+```bash
+virtualenv -p python3 .venv
+
+pip install -r requirements.txt
+
+source .venv/bin/activate
+```
