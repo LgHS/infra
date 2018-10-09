@@ -1,0 +1,9 @@
+---
+- import_role:
+    name: php
+
+- import_role:
+    name: reverse-proxy-unix
+  vars:
+    vhost: members.lghs.be
+    socket: /var/run/php/php7.2-fpm.sock

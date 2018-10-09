@@ -9,16 +9,15 @@
 
 - name: install php packages
   apt:
-    pkg: "{{ item }}"
+    pkg:
+      - php7.2
+      - php7.2-cli
+      - php7.2-fpm
+      - php7.2-curl
+      - php7.2-mbstring
+      - php7.2-opcache
+      - php7.2-pgsql
+      - php7.2-xml
+      - php7.2-zip
     state: present
     update-cache: yes
-  with_items:
-    - php7.2
-    - php7.2-cli
-    - php7.2-fpm
-    - php7.2-curl
-    - php7.2-mbstring
-    - php7.2-opcache
-    - php7.2-pgsql
-    - php7.2-xml
-    - php7.2-zip

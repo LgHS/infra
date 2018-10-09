@@ -1,4 +1,7 @@
 ---
+#
+# Global stuff
+#
 - hosts: all
   become: yes
   roles:
@@ -14,6 +17,11 @@
   roles:
     - database-server
 
+
+
+#
+# Specific applications
+#
 - hosts: candy
   become: yes
   roles:
@@ -22,6 +30,5 @@
 - hosts: roger
   become: yes
   roles:
-    - php
     - members.lghs.be
 #     - lghs.be
