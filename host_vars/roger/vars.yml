@@ -1,0 +1,12 @@
+---
+site_root: /var/www/members.lghs.be
+admin_email_address: "{{ vault_admin_email_address }}"
+admin_email_name: "{{ vault_admin_email_name }}"
+members_db_database: "{{ vault_members_db_database }}"
+members_db_username: "{{ vault_members_db_username }}"
+members_db_password: "{{ vault_members_db_password }}"
+members_mail_host: "{{ vault_members_mail_host }}"
+members_mail_port: "{{ vault_members_mail_port }}"
+members_mail_username: "{{ vault_members_mail_username }}"
+members_mail_password: "{{ vault_members_mail_password }}"
+members_mail_encryption: "{{ vault_members_mail_encryption }}"

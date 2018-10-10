@@ -7,9 +7,50 @@
   import_role:
     name: composer
 
+- name: install dependencies
+  command: composer install
+  args:
+    chdir: "{{ site_root }}"
+  become: true
+  become_user: www-data
+
 - name: install member.lghs.be vhost
   import_role:
     name: reverse-proxy-unix
   vars:
     vhost: members.lghs.be
     socket: /var/run/php/php7.2-fpm.sock
+
+- name: clone members repository
+  git:
+    repo: https://github.com/LgHS/sign-in.git
+    version: 3e9c3aabbe242fe0dab851b340459b1b23c002da
+    dest: "{{ site_root }}"
+  become: true
+  become_user: www-data
+
+- name: generate env file
+  template:
+    src: .env.j2
+    dest: "{{ site_root }}/.env"
+  register: env_created
+
+- name: run Artisan commands at install
+  command: "php artisan {{ item }}"
+  args:
+    chdir: "{{ site_root }}"
+  with_items:
+    - key:generate
+    - passport:install
+  when: env_created.changed
+
+- name: run Artisan commands
+  command: "php artisan {{ item }}"
+  with_items:
+    - php artisan config:cache
+    - php artisan optimize
+    - php artisan migrate
+  args:
+    chdir: "{{ site_root }}"
+
+-
