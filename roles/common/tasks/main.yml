@@ -5,6 +5,7 @@
       - curl
       - tmux
       - git
+      - htop
     state: present
     update-cache: yes
   tags:

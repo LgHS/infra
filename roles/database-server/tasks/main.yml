@@ -9,7 +9,10 @@
 
 - name: install postgresql
   apt:
-    name: postgresql-10
+    pkg:
+      - postgresql-10
+      - python-psycopg2
+  register: postgresql_installed
 
 - name: start postgresql
   systemd:

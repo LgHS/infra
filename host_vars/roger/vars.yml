@@ -1,7 +1,7 @@
 ---
-site_root: /var/www/members.lghs.be
 admin_email_address: "{{ vault_admin_email_address }}"
 admin_email_name: "{{ vault_admin_email_name }}"
+members_site_root: /var/www/members.lghs.be
 members_db_database: "{{ vault_members_db_database }}"
 members_db_username: "{{ vault_members_db_username }}"
 members_db_password: "{{ vault_members_db_password }}"
