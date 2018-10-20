@@ -22,7 +22,7 @@ server {
     }
 
     location / {
-        root /var/www/{vhost}/public;
+        root /var/www/{{ vhost }}/public;
         try_files $uri public/$uri /public/index.php?$query_string;
     }
 }
