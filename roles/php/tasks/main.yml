@@ -13,6 +13,7 @@
       - php7.2
       - php7.2-cli
       - php7.2-fpm
+      - php7.2-apc
       - php7.2-curl
       - php7.2-mbstring
       - php7.2-opcache
@@ -21,3 +22,13 @@
       - php7.2-zip
     state: present
     update-cache: yes
+
+
+# if nginx is installed, make sure it can talk to php-fpm
+- name: Determine available groups
+  getent:
+    database: passwd
+
+- name: Add additional groups to user
+  user: name="nginx" groups="www-data" append=yes
+  when: '"nginx" in getent_passwd'

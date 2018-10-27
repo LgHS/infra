@@ -1,0 +1,3 @@
+- name: letsencrypt_cloudflare
+  src: git+https://github.com/bendews/ansible-letsencrypt-cloudflare
+  version: ef1e85f265cd3e89661a5d269a5a1ecb57a70ac7

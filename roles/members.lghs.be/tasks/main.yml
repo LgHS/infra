@@ -1,18 +1,10 @@
 ---
-- name: create members database user
-  postgresql_user:
-    name: "{{ members_db_username }}"
-    password:  "{{ members_db_password }}"
-    role_attr_flags: LOGIN
-  become_user: postgres
-
-- name: create members database
-  postgresql_db:
-    name: "{{ members_db_database }}"
-    encoding: UTF-8
-    owner: "{{ members_db_username }}"
-  become_user: postgres
-
+- name: install member.lghs.be vhost
+  import_role:
+    name: reverse-proxy-unix
+  vars:
+    vhost: members.lghs.be
+    socket: /var/run/php/php7.2-fpm.sock
 
 
 - name: install php
@@ -30,13 +22,6 @@
   become: true
   become_user: www-data
 
-- name: install member.lghs.be vhost
-  import_role:
-    name: reverse-proxy-unix
-  vars:
-    vhost: members.lghs.be
-    socket: /var/run/php/php7.2-fpm.sock
-
 - name: clone members repository
   git:
     repo: https://github.com/LgHS/sign-in.git
@@ -53,19 +38,20 @@
     group: www-data
     mode: 0640
 
-- name: "check if .env has APP_KEY"
-  command: grep -q '^APP_KEY=' "{{ members_site_root }}/.env"
-  register: app_key_in_env
-  ignore_errors: yes
-  changed_when: no
 
-- name: generate laravel keys
-  command: "php artisan key:generate"
-  args:
-    chdir: "{{ members_site_root }}"
-  when: app_key_in_env.rc != 0
-  no_log: true
+- name: create members database user
+  postgresql_user:
+    name: "{{ members_db_username }}"
+    password:  "{{ members_db_password }}"
+    role_attr_flags: LOGIN
+  become_user: postgres
 
+- name: create members database
+  postgresql_db:
+    name: "{{ members_db_database }}"
+    encoding: UTF-8
+    owner: "{{ members_db_username }}"
+  become_user: postgres
 
 #
 # FIXME add changed_when
