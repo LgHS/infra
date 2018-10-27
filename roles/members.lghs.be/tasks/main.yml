@@ -70,7 +70,14 @@
   command: "php artisan passport:install"
   args:
     chdir: "{{ members_site_root }}"
-  when: # FIXME!!!!
+    creates: "{{ members_site_root }}/storage/oauth-private.key"
+
+- name: secure passport key
+  file:
+    dest: "{{ members_site_root }}/storage/oauth-private.key"
+    mode: 0640
+    owner: root
+    group: www-data
 
 - name: warmup cache
   command: "php artisan {{ item }}"
