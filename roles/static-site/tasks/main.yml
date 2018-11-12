@@ -1,0 +1,22 @@
+---
+- name: request certificate for {{ vhost }}
+  import_role:
+    #
+    # Just assume everything is going through cloudflare.
+    # If it ever becomes untrue, I'll deal with it
+    #
+    name: letsencrypt_cloudflare
+  vars:
+    letsencrypt_email: "infra@lghs.be"
+    cloudflare_email: "{{ lghs_cloudflare_email }}"
+    cloudflare_domain: "{{ lghs_cloudflare_domain }}"
+    certificate_common_name: "{{ vhost }}"
+    cloudflare_api_key: "{{ lghs_cloudflare_api_key }}"
+    letsencrypt_production: yes
+    include_intermediate: no
+
+- name: upload vhost config for {{ vhost }}
+  template:
+    src: vhost.conf.j2
+    dest: /etc/nginx/conf.d/{{ vhost }}.conf
+  notify: reload nginx

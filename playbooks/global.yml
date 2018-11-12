@@ -31,4 +31,6 @@
   become: yes
   roles:
     - members.lghs.be
-#     - lghs.be
+    - role: static-site
+      vars:
+        vhost: lghs.be
