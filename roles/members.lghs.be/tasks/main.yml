@@ -62,10 +62,6 @@
   args:
     chdir: "{{ members_site_root }}"
 
-#
-# Missing a check to not override previous keys
-# changed: [roger] => {"changed": true, "cmd": ["php", "artisan", "passport:install"], "delta": "0:00:00.696042", "end": "2018-10-13 13:36:21.870253", "rc": 0, "start": "2018-10-13 13:36:21.174211", "stderr": "", "stderr_lines": [], "stdout": "Encryption keys already exist. Use the --force option to overwrite them.\nPersonal access client created successfully.\nClient ID: 1\nClient Secret: ****\nPassword grant client created successfully.\nClient ID: 2\nClient Secret: ****", "stdout_lines": ["Encryption keys already exist. Use the --force option to overwrite them.", "Personal access client created successfully.", "Client ID: 1", "Client Secret: ****", "Password grant client created successfully.", "Client ID: 2", "Client Secret: *******"]}
-#
 - name: install passport
   command: "php artisan passport:install"
   args:
