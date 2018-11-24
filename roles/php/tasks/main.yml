@@ -13,7 +13,6 @@
       - php7.2
       - php7.2-cli
       - php7.2-fpm
-      - php7.2-apc
       - php7.2-curl
       - php7.2-mbstring
       - php7.2-opcache
