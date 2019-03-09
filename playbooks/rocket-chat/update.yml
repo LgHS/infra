@@ -1,0 +1,60 @@
+- hosts: candy
+  become: true
+  vars:
+    xz_memlimit: "100M"
+  tasks:
+    - debug:
+        msg: "{{ ansible_date_time.date }}"
+
+    - name: download latest release
+      get_url:
+        url: "https://releases.rocket.chat/latest/download"
+        dest: "/tmp/rocketchat-latest-release.tar.gz"
+        mode: 0640
+        owner: root
+        group: root
+
+    - name: compress backup
+      shell: |
+        tar cf "/var/backups/{{ ansible_date_time.date }}-chat-lghs-be.backup.tar" /var/www/chat-lghs-be \
+          && xz -9 --memlimit={{ xz_memlimit }} "/var/backups/{{ ansible_date_time.date }}-chat-lghs-be.backup.tar"
+      args:
+        creates: "/var/backups/{{ ansible_date_time.date }}-chat-lghs-be.backup.tar.xz"
+
+    - name: extract new version
+      shell: |
+        tar xf /tmp/rocketchat-latest-release.tar.gz -C /var/www bundle
+
+    - name: set nix user and group
+      file:
+        path: "/var/www/bundle"
+        owner: "chat-lghs-be"
+        group: "chat-lghs-be"
+        recurse: true
+
+    - name: install application dependencies
+      shell: |
+        cd /var/www/bundle/programs/server && npm install
+
+    - name: backup mongodb
+      shell: |
+        mongodump \
+          --db rocketchat \
+          --out "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup" \
+            && chmod -R o-r "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup" \
+            && tar cf "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup.tar" \
+              "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup" \
+            && rm -r "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup" \
+            && chmod o-r "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup.tar" \
+            && xz -9 --memlimit={{ xz_memlimit }} "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup.tar"
+      args:
+        creates: "/var/backups/{{ ansible_date_time.date }}-rocketchat-mongodump.backup.tar.xz"
+
+    - name: swap application versions
+      shell: |
+        mv /var/www/chat-lghs-be /var/www/chat-lghs-be-backup \
+          && mv /var/www/bundle /var/www/chat-lghs-be
+
+    - name: restart rocket chat
+      shell: |
+        systemctl restart chat-lghs-be

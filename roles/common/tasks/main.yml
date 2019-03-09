@@ -6,6 +6,7 @@
       - tmux
       - git
       - htop
+      - man
     state: present
     update-cache: yes
   tags:
