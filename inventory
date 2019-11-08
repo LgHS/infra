@@ -1,15 +1,15 @@
-candy
-roger
-pepito
-gingerbread
+candy.lghs.space
+roger.lghs.space
+pepito.lghs.space
+gingerbread.lghs.space
 
 [local]
-pepito
-gingerbread
+pepito.lghs.space
+gingerbread.lghs.space
 
 [web]
-candy
-roger
+candy.lghs.space
+roger.lghs.space
 
 [database]
-roger
+roger.lghs.space
