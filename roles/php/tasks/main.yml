@@ -5,7 +5,7 @@
 
 - name: add php apt source
   apt_repository:
-    repo: 'deb https://packages.sury.org/php/ stretch main'
+    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
 
 - name: install php packages
   apt:

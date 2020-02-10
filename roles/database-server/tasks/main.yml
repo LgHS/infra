@@ -5,7 +5,7 @@
 
 - name: add postgresql apt source
   apt_repository:
-    repo: deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main
+    repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
 
 - name: install postgresql
   apt:

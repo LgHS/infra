@@ -5,7 +5,7 @@
 
 - name: add nginx apt source
   apt_repository:
-    repo: deb http://nginx.org/packages/debian/ stretch nginx
+    repo: "deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx"
 
 - name: install nginx
   apt:
