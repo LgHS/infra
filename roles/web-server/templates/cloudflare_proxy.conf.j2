@@ -1,0 +1,6 @@
+{% for cidr in cloudflare_proxies_ipv4.msg.splitlines()
+             + cloudflare_proxies_ipv6.msg.splitlines() %}
+    set_real_ip_from {{ cidr }};
+{% endfor %}
+
+real_ip_header X-Forwarded-For;

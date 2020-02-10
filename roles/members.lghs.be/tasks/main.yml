@@ -6,7 +6,6 @@
     vhost: members.lghs.be
     socket: /var/run/php/php7.2-fpm.sock
 
-
 - name: install php
   import_role:
     name: php

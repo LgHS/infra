@@ -18,16 +18,15 @@
     - database-server
 
 
-
 #
 # Specific applications
 #
-- hosts: candy
+- hosts: candy.lghs.space
   become: yes
   roles:
     - rocketchat
 
-- hosts: roger
+- hosts: roger.lghs.space
   become: yes
   roles:
     - members.lghs.be

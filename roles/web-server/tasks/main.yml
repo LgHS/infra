@@ -11,6 +11,47 @@
   apt:
     name: nginx
 
+- name: create /etc/nginx/ssl
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: generate dhparam
+  command:
+    cmd: openssl dhparam -out /etc/nginx/ssl/dhparam-2048.pem 2048
+    creates: /etc/nginx/ssl/dhparam-2048.pem
+
+- name: install default ssl config
+  copy:
+    src: ssl.conf
+    dest: /etc/nginx/ssl.conf
+    owner: root
+    group: root
+    mode: 644
+
+- name: download cloudflare ipv4 ranges
+  uri:
+    url: "https://www.cloudflare.com/ips-v4"
+    return_content: true
+  register: cloudflare_proxies_ipv4
+
+- name: download cloudflare ipv6 ranges
+  uri:
+    url: "https://www.cloudflare.com/ips-v6"
+    return_content: true
+  register: cloudflare_proxies_ipv6
+
+- name: install cloudflare proxy support
+  template:
+    src: cloudflare_proxy.conf.j2
+    dest: /etc/nginx/cloudflare_proxy.conf
+    owner: root
+    group: root
+    mode: 644
+
 - name: start nginx
   systemd:
     name: nginx
