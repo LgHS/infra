@@ -1,0 +1,4 @@
+accounting_oauth_client_id: "{{ vault_accounting_oauth_client_id }}"
+accounting_oauth_client_secret: "{{ vault_accounting_oauth_client_secret }}"
+accounting_database_schema_password: "{{ vault_accounting_database_schema_password }}"
+accounting_database_application_password: "{{ vault_accounting_database_application_password }}"

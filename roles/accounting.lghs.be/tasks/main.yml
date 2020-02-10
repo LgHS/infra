@@ -1,0 +1,63 @@
+---
+- block:
+  - name:
+    apt_repository:
+      repo: "deb http://deb.debian.org/debian stretch-backports main"
+      filename: "stretch-backports.list"
+
+  - name: "install java"
+    apt:
+      pkg: "openjdk-11-jre-headless"
+      default_release: "strech-backports"
+      update_cache: true
+  when: "ansible_distribution_release == 'stretch'"
+
+- name: "install java"
+  apt:
+    pkg: "openjdk-11-jre-headless"
+  when: "ansible_distribution_release == 'buster'"
+
+- import_tasks: "database.yml"
+
+- name: "create application group"
+  group:
+    name: "accounting"
+    system: true
+
+- name: "create application user"
+  user:
+    name: "accounting"
+    group: "accounting"
+    shell: "/usr/sbin/nologin"
+    home: "/opt/accounting"
+    create_home: true
+    system: true
+
+- name: "install application config"
+  template:
+    src: "application.yml.j2"
+    dest: "/opt/accounting/application.yml"
+    owner: "root"
+    group: "accounting"
+    mode: "0640"
+
+- name: install member.lghs.be vhost
+  import_role:
+    name: reverse-proxy-http
+  vars:
+    vhost: accounting.lghs.be
+    upstream: 'http://localhost:8080'
+
+- name: "install systemd service"
+  copy:
+    src: "accounting.service"
+    dest: "/etc/systemd/system/accounting.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: "enable service"
+  systemd:
+    name: "accounting.service"
+    daemon_reload: true
+    enabled: true

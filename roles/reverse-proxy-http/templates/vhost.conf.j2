@@ -1,0 +1,26 @@
+server {
+    # no 80 since we go through cloudflare
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    server_name {{ vhost }};
+
+    index index.html;
+
+    ssl_certificate /etc/ssl/{{ vhost }}/{{ vhost }}.crt;
+    ssl_certificate_key /etc/ssl/{{ vhost }}/{{ vhost }}.key;
+
+    include /etc/nginx/ssl.conf;
+    include /etc/nginx/cloudflare_proxy.conf;
+
+    error_log /var/log/nginx/{{ vhost }}_error.log;
+    access_log /var/log/nginx/{{ vhost }}_access.log combined;
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header Host $host;
+        proxy_pass {{ upstream }};
+    }
+}

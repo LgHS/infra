@@ -1,0 +1,16 @@
+[Unit]
+Description=Accounting Application
+Requires=network.target postgresql.service
+
+[Service]
+User=accounting
+Group=accounting
+Type=simple
+ExecStart=java -jar /opt/accounting/accounting.jar
+RestartSec=10
+Restart=on-failure
+PrivateTmp=yes
+WorkingDirectory=/opt/accounting
+
+[Install]
+WantedBy=multi-user.target

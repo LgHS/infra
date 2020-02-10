@@ -1,0 +1,38 @@
+- name: "create schema user"
+  postgresql_user:
+    name: "lghs_accounting_root"
+    password:  "{{ accounting_database_schema_password }}"
+    role_attr_flags: "LOGIN"
+  become_user: "postgres"
+
+- name: "create database"
+  postgresql_db:
+    name: "lghs_accounting"
+    encoding: "UTF-8"
+    owner: "lghs_accounting_root"
+  become_user: "postgres"
+
+- name: "enable extensions"
+  postgresql_ext:
+    name: "{{ item }}"
+    db: "lghs_accounting"
+  become_user: "postgres"
+  with_items:
+    - "uuid-ossp"
+    - "pgcrypto"
+
+- name: "revoke all on schema public from public"
+  postgresql_privs:
+    db: "lghs_accounting"
+    state: "absent"
+    privs: "all"
+    objs: "public"
+    role: "public"
+  become_user: "postgres"
+
+- name: "create application user"
+  postgresql_user:
+    name: "lghs_accounting_app"
+    password:  "{{ accounting_database_application_password }}"
+    role_attr_flags: "LOGIN"
+  become_user: "postgres"

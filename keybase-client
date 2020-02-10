@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -euo pipefail
+
+KEYBASE_PATH="/team/lghs.infra/passwords/ansible-vaults"
+
+function get() {
+    keybase fs read "keybase://$KEYBASE_PATH/$1"
+}
+
+function set() {
+    if tty --quiet; then
+        if keybase fs stat "keybase://$KEYBASE_PATH/$1" &> /dev/null; then
+            read -p 'You are overwriting an existing password, continue? (Y/n) ' confirm
+            if [[ "$confirm" != "" && "$confirm" != "y" ]]; then
+                exit 2
+            fi
+        fi
+        read -rsp "Write your password: " password
+        echo "$password" | keybase fs write "keybase://$KEYBASE_PATH/$1"
+    else
+        keybase fs write "keybase://$KEYBASE_PATH/$1"
+    fi
+}
+
+function remove() {
+    keybase fs rm "keybase://$KEYBASE_PATH/$1"
+}
+
+command="$1"
+shift
+case "$command" in
+    "--vault-id" | "get")
+        get "$@"
+        ;;
+    "set")
+        set "$@"
+        ;;
+    "remove")
+        remove "$@"
+        ;;
+    *)
+        echo "unknown command, I only know 'get' and 'set'" >&2
+        ;;
+esac
