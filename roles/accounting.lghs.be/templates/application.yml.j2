@@ -3,9 +3,20 @@ spring.security.oauth2.client.registration.members:
   client-secret: "{{ accounting_oauth_client_secret }}"
   redirect-uri-template: "https://accounting.lghs.be/login/oauth2/code/{registrationId}"
 
-server.forward-headers-strategy: "NATIVE"
+server:
+  address: "localhost"
+  forward-headers-strategy: "NATIVE"
+  tomcat:
+    connection-timeout: 2s
+    max-threads: 10
+    min-spare-threads: 2
 
-spring.flyway.password: "{{ accounting_database_schema_password }}"
-spring.datasource.password: "{{ accounting_database_application_password }}"
-
+spring:
+  flyway.password: "{{ accounting_database_schema_password }}"
+  datasource:
+    password: "{{ accounting_database_application_password }}"
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: "{{ 1000 * 60 * 30 }}"
 lghs.accounting.coda-rs: "/opt/accounting/coda-rs"

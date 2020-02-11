@@ -1,6 +1,6 @@
 ---
 - block:
-  - name:
+  - name: "ensure backport is available on stretch"
     apt_repository:
       repo: "deb http://deb.debian.org/debian stretch-backports main"
       filename: "stretch-backports.list"
@@ -40,6 +40,14 @@
     owner: "root"
     group: "accounting"
     mode: "0640"
+
+- name: "install coda parser"
+  copy:
+    src: "coda-rs"
+    dest: "/opt/accounting/coda-rs"
+    owner: "root"
+    group: "accounting"
+    mode: "0750"
 
 - name: install member.lghs.be vhost
   import_role:
