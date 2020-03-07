@@ -1,0 +1,2 @@
+accounting-deploy ALL=(ALL) NOPASSWD: /bin/systemctl start accounting.service
+accounting-deploy ALL=(ALL) NOPASSWD: /bin/systemctl stop accounting.service

@@ -1,0 +1,47 @@
+- name: "create deploy group"
+  group:
+    name: "accounting-deploy"
+    system: true
+
+- name: "create deploy user"
+  user:
+    name: "accounting-deploy"
+    group: "accounting-deploy"
+    shell: "/bin/bash"
+    home: "/opt/accounting-deploy"
+    create_home: true
+    system: true
+
+- name: "copy deploy script"
+  copy:
+    src: "deploy-accounting"
+    dest: "/opt/accounting-deploy/deploy-accounting"
+    owner: "root"
+    group: "accounting-deploy"
+    mode: "0750"
+
+- name: "copy sudo config"
+  copy:
+    src: "accounting-deploy-sudo"
+    dest: "/etc/sudoers.d/99-deploy-accounting-commands"
+    owner: "root"
+    group: "root"
+    mode: "0440"
+
+- name: user has ~/.ssh
+  file:
+    path: "/opt/accounting-deploy/.ssh"
+    owner: "accounting-deploy"
+    group: "accounting-deploy"
+    state: directory
+    mode: 0700
+
+- name: copy deploy key
+  lineinfile:
+    line: |
+      no-agent-forwarding,no-port-forwarding,no-X11-forwarding,no-user-rc,command="/opt/accounting-deploy/deploy-accounting" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDakpOLbPfFzh2hGh+KE6/dSR8O3ny5Bsv+sVtJuf25p accounting-deploy@github.com
+    dest: "/opt/accounting-deploy/.ssh/authorized_keys"
+    create: yes
+    mode: 0600
+    owner: "accounting-deploy"
+    group: "accounting-deploy"

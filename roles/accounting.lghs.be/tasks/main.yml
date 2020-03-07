@@ -19,6 +19,8 @@
 
 - import_tasks: "database.yml"
 
+- import_tasks: "create_deploy_user.yml"
+
 - name: "create application group"
   group:
     name: "accounting"
@@ -48,6 +50,25 @@
     owner: "root"
     group: "accounting"
     mode: "0750"
+
+- name: "create dummy jar file"
+  file:
+    dest: "/opt/accounting/accounting.jar"
+    owner: "accounting-deploy"
+    group: "accounting"
+    mode: "0640"
+    state: "touch"
+
+- name: "create dummy update file"
+  file:
+    dest: "/opt/accounting/accounting.jar.{{ item }}"
+    owner: "accounting-deploy"
+    group: "accounting-deploy"
+    mode: "0640"
+    state: "touch"
+  with_items:
+    - "old"
+    - "new"
 
 - name: install member.lghs.be vhost
   import_role:

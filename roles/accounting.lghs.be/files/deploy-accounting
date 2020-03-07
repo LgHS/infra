@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -euo pipefail
+set -x
+
+directory="/opt/accounting"
+
+cd "$directory"
+
+cp /dev/stdin accounting.jar.new
+
+sudo systemctl stop accounting.service
+
+cat accounting.jar > accounting.jar.old
+cat accounting.jar.new > accounting.jar
+
+sudo systemctl start accounting.service

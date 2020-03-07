@@ -4,7 +4,7 @@ spring.security.oauth2.client.registration.members:
   redirect-uri-template: "https://accounting.lghs.be/login/oauth2/code/{registrationId}"
 
 server:
-  address: "localhost"
+  address: "::1"
   forward-headers-strategy: "NATIVE"
   tomcat:
     connection-timeout: 2s
