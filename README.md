@@ -2,7 +2,7 @@
 
 ## Setup
 
-You need to update your local ssh config since the public DNS are actually cloudflare proxy without the port 22 open. Ask an admin if you need them.
+You need to update your local SSH config since the public DNS are actually CloudFlare proxies without the port 22 open. Ask an admin if you need them.
 
 ```sh
 Host <inventory-name>
@@ -11,18 +11,15 @@ Host <inventory-name>
     IdentityFile <server-key>
 ```
 
-We use a virtualenv to prevent you from having the wrong dependency versions, you can initialise it with these commands:
+We use pipenv to prevent you from having the wrong dependency versions, you can initialise it with this command:
 ```bash
-python3 -m venv --prompt lghs-infra .venv
-source .venv/bin/activate
-
-pip install -r requirements.txt
+pipenv install
 ```
 
-You will need to run `source .venv/bin/activate` again every time you come back to the repository.
+You will need to run `pipenv shell` every time you come back to the repository.
 
 
-## Provisionning a server
+## Provisioning a server
 
 After creating a server, you need to provision it to have access to it with your normal user. To do so, add the server to the inventory and run the following command:
 
