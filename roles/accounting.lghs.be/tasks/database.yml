@@ -20,6 +20,7 @@
   with_items:
     - "uuid-ossp"
     - "pgcrypto"
+    - "btree_gist"
 
 - name: "revoke all on schema public from public"
   postgresql_privs:
