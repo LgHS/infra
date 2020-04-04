@@ -2,12 +2,15 @@
 - name: ensure essential packages are installed
   apt:
     pkg:
+      - acl
+      - bash-completion
       - curl
-      - tmux
       - git
-      - htop
-      - man
       - gpg
+      - htop
+      - less
+      - man
+      - tmux
     state: present
     update-cache: yes
   tags:

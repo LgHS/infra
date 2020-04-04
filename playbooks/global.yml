@@ -21,11 +21,6 @@
 #
 # Specific applications
 #
-- hosts: candy.lghs.space
-  become: yes
-  roles:
-    - rocketchat
-
 - hosts: roger.lghs.space
   become: yes
   roles:
@@ -38,3 +33,8 @@
   become: yes
   roles:
     - accounting.lghs.be
+
+- hosts: escandalo.lghs.space
+  become: yes
+  roles:
+    - chat.lghs.be

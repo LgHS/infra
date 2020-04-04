@@ -70,7 +70,7 @@
     - "old"
     - "new"
 
-- name: install member.lghs.be vhost
+- name: install accounting.lghs.be vhost
   import_role:
     name: reverse-proxy-http
   vars:

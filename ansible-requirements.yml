@@ -1,3 +1,7 @@
 - name: letsencrypt_cloudflare
   src: git+https://github.com/bendews/ansible-letsencrypt-cloudflare
-  version: 9a28293447b4d07264b92b1a2e4a73a1555c0358
+  version: 3aeb64c9a3c7b082f11886161a93cd1d202933e2
+
+- name: RocketChat.Server
+  src: git+https://github.com/LgHS/Rocket.Chat.Ansible.git
+  version: dee7d06a35b10ae90f761330feb202133d4d424b
