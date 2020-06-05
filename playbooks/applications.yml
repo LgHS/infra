@@ -1,26 +1,4 @@
 ---
-#
-# Global stuff
-#
-- hosts: all
-  become: yes
-  roles:
-    - common
-
-- hosts: web
-  become: yes
-  roles:
-    - web-server
-
-- hosts: database
-  become: yes
-  roles:
-    - database-server
-
-
-#
-# Specific applications
-#
 - hosts: roger.lghs.space
   become: yes
   roles:
