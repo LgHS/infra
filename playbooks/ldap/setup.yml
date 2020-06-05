@@ -5,4 +5,4 @@
     - apt:
         name:
           - slapd
-          - ldaputils
+          - ldap-utils
