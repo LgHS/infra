@@ -1,5 +1,5 @@
 ---
-- host: all
+- hosts: all
   vars_files: []
   tasks:
     - apt:

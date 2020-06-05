@@ -1,7 +1,4 @@
 ---
-#
-# Global stuff
-#
 - hosts: all
   become: yes
   roles:
@@ -16,26 +13,3 @@
   become: yes
   roles:
     - database-server
-
-
-#
-# Specific applications
-#
-- hosts: roger.lghs.space
-  become: yes
-  roles:
-    - members.lghs.be
-    - role: static-site
-      vars:
-        vhost: lghs.be
-
-- hosts: sparkle.lghs.space
-  become: yes
-  roles:
-    - ldap
-    - accounting.lghs.be
-
-- hosts: escandalo.lghs.space
-  become: yes
-  roles:
-    - chat.lghs.be

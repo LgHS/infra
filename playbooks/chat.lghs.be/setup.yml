@@ -1,0 +1,8 @@
+---
+- hosts: escandalo.lghs.space
+  vars_files:
+    - ../vault/cloudflare_dns.yml
+    - ../vault/cloudflare_dns.vault
+  become: yes
+  roles:
+    - chat.lghs.be

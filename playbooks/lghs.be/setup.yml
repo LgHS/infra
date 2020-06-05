@@ -1,0 +1,9 @@
+- hosts: roger.lghs.space
+  vars_files:
+    - ../vault/cloudflare_dns.yml
+    - ../vault/cloudflare_dns.vault
+  become: yes
+  roles:
+    - role: static-site
+      vars:
+        vhost: lghs.be

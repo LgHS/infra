@@ -1,0 +1,9 @@
+- hosts: sparkle.lghs.space
+  vars_files:
+    - ../vault/cloudflare_dns.yml
+    - ../vault/cloudflare_dns.vault
+    - vault/accounting.yml
+    - vault/accounting.vault
+  become: yes
+  roles:
+    - accounting.lghs.be

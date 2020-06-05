@@ -1,0 +1,3 @@
+lghs_cloudflare_api_key: "{{ vault_lghs_cloudflare_api_key }}"
+lghs_cloudflare_email: "{{ vault_lghs_cloudflare_email }}"
+lghs_cloudflare_domain: lghs.be
