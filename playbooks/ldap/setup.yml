@@ -1,0 +1,8 @@
+---
+- host: all
+  vars_files: []
+  tasks:
+    - apt:
+        name:
+          - slapd
+          - ldaputils
