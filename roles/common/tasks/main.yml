@@ -31,38 +31,38 @@
 
 - name: create user
   user:
-    name: "{{ item.path }}"
+    name: "{{ item }}"
     state: present
     create_home: yes
     group: priviledged-users
     shell: /bin/bash
-  with_filetree: users/
+  loop: "{{ admins }}"
 
 - name: user homes are private
   file:
-    path: "/home/{{ item.path }}"
-    owner: "{{ item.path }}"
+    path: "/home/{{ item }}"
+    owner: "{{ item }}"
     group: priviledged-users
     state: directory
     mode: 0700
-  with_filetree: users/
+  loop: "{{ admins }}"
 
 - name: users have ~/.ssh
   file:
-    path: "/home/{{ item.path }}/.ssh"
-    owner: "{{ item.path }}"
+    path: "/home/{{ item }}/.ssh"
+    owner: "{{ item }}"
     group: priviledged-users
     state: directory
     mode: 0700
-  with_filetree: users/
+  loop: "{{ admins }}"
 
 - name: copy developer keys
   lineinfile:
-    src: "users/{{ item.path }}"
-    dest: "/home/{{ item.path }}/.ssh/authorized_keys"
+    src: "users/{{ item }}"
+    dest: "/home/{{ item }}/.ssh/authorized_keys"
     create: yes
     mode: 0600
-    owner: "{{ item.path }}"
+    owner: "{{ item }}"
     group: "priviledged-users"
-    line: "{{ lookup('file', 'users/' + item.path) }}"
-  with_filetree: users/
+    line: "{{ lookup('file', 'users/' + item) }}"
+  loop: "{{ admins }}"

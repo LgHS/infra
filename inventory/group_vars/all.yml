@@ -1,0 +1,7 @@
+infra_admins:
+  - bendem
+  - iooner
+
+server_admins: []
+
+admins: "{{ (infra_admins + server_admins) | unique }}"
