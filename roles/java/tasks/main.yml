@@ -1,0 +1,18 @@
+---
+- block:
+  - name: "ensure backport is available on stretch"
+    apt_repository:
+      repo: "deb http://deb.debian.org/debian stretch-backports main"
+      filename: "stretch-backports.list"
+
+  - name: "install java"
+    apt:
+      pkg: "openjdk-11-jre-headless"
+      default_release: "strech-backports"
+      update_cache: true
+  when: "ansible_distribution_release == 'stretch'"
+
+- name: "install java"
+  apt:
+    pkg: "openjdk-11-jre-headless"
+  when: "ansible_distribution_release == 'buster'"

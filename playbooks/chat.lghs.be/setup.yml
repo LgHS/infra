@@ -1,8 +1,19 @@
 ---
 - hosts: escandalo.lghs.space
+  become: yes
   vars_files:
     - ../vault/cloudflare_dns.yml
     - ../vault/cloudflare_dns.vault
-  become: yes
+
   roles:
-    - chat.lghs.be
+    - name: reverse-proxy-http
+      vars:
+        vhost: chat.lghs.be
+        upstream: 'http://localhost:3000'
+
+    - name: RocketChat.Server
+      vars:
+        rocket_chat_version: 3.0.11
+        rocket_chat_include_nginx: false
+        rocket_chat_node_version: 12
+        rocket_chat_mongodb_org_version: 4.2

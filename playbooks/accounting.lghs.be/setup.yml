@@ -1,9 +1,87 @@
+---
 - hosts: sparkle.lghs.space
+  become: yes
   vars_files:
     - ../vault/cloudflare_dns.yml
     - ../vault/cloudflare_dns.vault
     - vault/accounting.yml
     - vault/accounting.vault
-  become: yes
+
   roles:
-    - accounting.lghs.be
+    - java
+
+  tasks:
+    - import_tasks: "database.yml"
+
+    - import_tasks: "create_deploy_user.yml"
+
+    - name: "create application group"
+      group:
+        name: "accounting"
+        system: true
+
+    - name: "create application user"
+      user:
+        name: "accounting"
+        group: "accounting"
+        shell: "/usr/sbin/nologin"
+        home: "/opt/accounting"
+        create_home: true
+        system: true
+
+    - name: "install application config"
+      template:
+        src: "application.yml.j2"
+        dest: "/opt/accounting/application.yml"
+        owner: "root"
+        group: "accounting"
+        mode: "0640"
+
+    - name: "install coda parser"
+      copy:
+        src: "coda-rs"
+        dest: "/opt/accounting/coda-rs"
+        owner: "root"
+        group: "accounting"
+        mode: "0750"
+
+    - name: "create dummy jar file"
+      file:
+        dest: "/opt/accounting/accounting.jar"
+        owner: "accounting-deploy"
+        group: "accounting"
+        mode: "0640"
+        state: "touch"
+
+    - name: "create dummy update file"
+      file:
+        dest: "/opt/accounting/accounting.jar.{{ item }}"
+        owner: "accounting-deploy"
+        group: "accounting-deploy"
+        mode: "0640"
+        state: "touch"
+      with_items:
+        - "old"
+        - "new"
+
+    - name: install accounting.lghs.be vhost
+      import_role:
+        name: reverse-proxy-http
+      vars:
+        vhost: accounting.lghs.be
+        upstream: 'http://localhost:8080'
+
+    - name: "install systemd service"
+      copy:
+        src: "accounting.service"
+        dest: "/etc/systemd/system/accounting.service"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      register: accouting_service
+
+    - name: "enable service"
+      systemd:
+        name: "accounting.service"
+        daemon_reload: "{{ accouting_service is changed }}"
+        enabled: true
