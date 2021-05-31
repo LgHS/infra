@@ -33,3 +33,7 @@ Once this is done, you can run the global role using your normal user to set it 
 ```bash
 ansible-playbook -l <new-server> playbooks/global.yml
 ```
+
+## Running playbooks
+
+Some of our servers aren't accessible publicly, you can exclude them for your plays using `--limit '!local'`
