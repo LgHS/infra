@@ -4,6 +4,7 @@
   vars_files:
     - ../vault/cloudflare_dns.yml
     - ../vault/cloudflare_dns.vault
+
     - vault/accounting.yml
     - vault/accounting.vault
 
@@ -12,7 +13,6 @@
 
   tasks:
     - import_tasks: "database.yml"
-
     - import_tasks: "create_deploy_user.yml"
 
     - name: "create application group"

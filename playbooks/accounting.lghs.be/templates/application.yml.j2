@@ -19,4 +19,18 @@ spring:
       minimum-idle: 2
       maximum-pool-size: 10
       idle-timeout: "{{ 1000 * 60 * 30 }}"
-lghs.accounting.coda-rs: "/opt/accounting/coda-rs"
+
+  mail:
+    host: smtp-zose.yulpa.io
+    username: accounting@liegehacker.space
+    password: "{{ accounting_smtp_password }}"
+    port: 465
+    protocol: smtps
+    properties:
+      "[mail.smtp.connectiontimeout]": 1000
+      "[mail.smtp.timeout]": 1000
+      "[mail.smtp.writetimeout]": 1000
+
+lghs.accounting:
+  coda-rs: "/opt/accounting/coda-rs"
+  deploy-url: "https://accounting.lghs.be"
