@@ -10,15 +10,15 @@
 - name: install php packages
   apt:
     pkg:
-      - php7.2
-      - php7.2-cli
-      - php7.2-fpm
-      - php7.2-curl
-      - php7.2-mbstring
-      - php7.2-opcache
-      - php7.2-pgsql
-      - php7.2-xml
-      - php7.2-zip
+      - php7.4
+      - php7.4-cli
+      - php7.4-fpm
+      - php7.4-curl
+      - php7.4-mbstring
+      - php7.4-opcache
+      - php7.4-pgsql
+      - php7.4-xml
+      - php7.4-zip
     state: present
     update-cache: yes
 

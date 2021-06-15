@@ -11,7 +11,7 @@
         name: reverse-proxy-unix
       vars:
         vhost: members.lghs.be
-        socket: /var/run/php/php7.2-fpm.sock
+        socket: /var/run/php/php7.4-fpm.sock
 
     - name: install php
       import_role:
