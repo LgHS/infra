@@ -10,12 +10,12 @@
 - name: install postgresql
   apt:
     pkg:
-      - postgresql-11
+      - postgresql-13
       - python-psycopg2
   register: postgresql_installed
 
 - name: start postgresql
   systemd:
-    name: postgresql@11-main
+    name: postgresql@13-main
     state: started
     enabled: yes
