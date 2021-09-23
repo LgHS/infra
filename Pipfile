@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-ansible = ">=2.10,<3,<2.11"
+ansible = ">=2.10,<4.3,<5"
 
 [requires]
 python_version = "3"
